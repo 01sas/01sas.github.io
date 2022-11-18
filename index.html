@@ -189,18 +189,12 @@
                 if (clampedPoint1.index !== undefined
                     && clampedPoint2.index !== undefined
                     && clampedPoint1.index !== clampedPoint2.index) {
-                    if (clampedPoint1.index < clampedPoint2.index) {
-                        for (j = clampedPoint1.index + 1; j <= clampedPoint2.index; j++) {
-                            segments.push(boundLines[j].point)
+                    for (j = clampedPoint1.index; j !== clampedPoint2.index;) {
+                        j++;
+                        if (j >= boundLines.length) {
+                            j = 0;
                         }
-                    } else {
-                        for (j = clampedPoint1.index; j !== clampedPoint2.index;) {
-                            j++;
-                            if (j >= boundLines.length) {
-                                j = 0;
-                            }
-                            segments.push(boundLines[j].point);
-                        }
+                        segments.push(boundLines[j].point);
                     }
                 }
                 segments.push(clampedPoint2.point);
