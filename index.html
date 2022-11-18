@@ -7,6 +7,16 @@
     <script type="text/javascript" src="js/paper-full.min.js"></script>
     <script type="text/javascript" src="js/free-zones.js"></script>
     <script type="text/paperscript" canvas="myCanvas">
+        var playerSvgData = "M399.556,77.384c-28.3-14.5-57.4-26.7-87.2-37.5c-4.2-8.8-19.5-9-27.6-8c-14.801,2-29.9,4-44.7,4.3" +
+            "c-14.8-0.3-29.9-2.3-44.7-4.3c-8-1.1-23.4-0.8-27.6,8c-29.9,10.9-58.9,23-87.2,37.5c-6.8,3.5-82.9,45-80.5,49" +
+            "c11.3,18.8,56.6,103.1,62.2,103.1c7.9,0,21.3-14.5,28.6-11.9c0.4,16.8,1.1,211.4,1.1,222.6c0,7.1,83.1,8.301,148,8.301" +
+            "c65,0,148-1.201,148-8.301c0.1-11.299,0.699-205.8,1.1-222.6c7.3-2.6,20.7,11.9,28.6,11.9c5.601,0,50.9-84.3,62.2-103.1" +
+            "C482.355,122.484,406.355,80.884,399.556,77.384z M135.756,426.184h-24v-31.5h24V426.184z M216.156,237.184c0,0.8-0.7,1.5-1.5,1.5" +
+            "h-23.8c-0.8,0-1.5-0.7-1.5-1.5v-59.2c0-1.2-1.4-2-2.4-1.2c-3.5,2.5-6.9,4.6-10.2,6.2c-3.6,1.8-8.1,3.6-13.3,5.3c-1,0.3-2-0.4-2-1.5" +
+            "v-18.6c0-0.7,0.4-1.2,1.1-1.5c8.5-2.8,15.2-6.2,20-10.2c4.8-3.9,8.5-8.7,11.3-14.3c0.3-0.5,0.8-0.9,1.4-0.9h19.5" +
+            "c0.8,0,1.5,0.7,1.5,1.5v94.4H216.156z M305.355,237.184c0,0.8-0.7,1.5-1.5,1.5h-23.8c-0.8,0-1.5-0.7-1.5-1.5v-59.2" +
+            "c0-1.2-1.4-2-2.4-1.2c-3.5,2.5-6.899,4.6-10.2,6.2c-3.6,1.8-8.1,3.6-13.3,5.3c-1,0.3-2-0.4-2-1.5v-18.6c0-0.7,0.4-1.2,1.101-1.5" +
+            "c8.5-2.8,15.199-6.2,20-10.2c4.8-3.9,8.5-8.7,11.3-14.3c0.3-0.5,0.8-0.9,1.399-0.9h19.501c0.8,0,1.5,0.7,1.5,1.5v94.4H305.355z";
         var freeZonePath = new Path({
             fillColor: 'rgba(0, 128, 0, 0.66)',
             closed: true
@@ -17,18 +27,40 @@
             team1.push(new Shape.Circle({
                 center: new Point(i * 80 + 40, 40),
                 radius: 30,
-                fillColor: 'rgba(28, 117, 188, 0.66)'
+                fillColor: 'rgba(28, 117, 188)',
+                player: true
             }));
+            /*var playerPath = new Path(playerSvgData);
+            playerPath.fillColor = 'rgba(28, 117, 188)';
+            playerPath.scale(0.1);
+            team1.push(new Group({
+                children: [
+                    playerPath,
+                    new Shape.Circle({
+                        radius: 30,
+                        center: new Point(0, 0),
+                        fillColor: 'rgba(28, 117, 188)',
+                        player: true
+                    })
+                ],
+                position: new Point(i * 80 + 40, 40)
+            }));*/
         }
         for (i = 0; i < 8; i++) {
             team2.push(new Shape.Circle({
                 center: new Point(i * 80 + 40, 100),
                 radius: 30,
-                fillColor: 'rgba(255, 128, 0, 0.66)'
+                fillColor: 'rgba(255, 128, 0)',
+                player: true
             }));
         }
 
         team1[0].ball = true;
+        /*team1[0].addChild(new Shape.Circle({
+            center: new Point(30, 30),
+            radius: 5,
+            fillColor: 'black'
+        }));*/
         calculateFreeZones();
 
         player = null;
@@ -45,7 +77,7 @@
             }
 
             if (hitResult) {
-                if (hitResult.type === 'fill') {
+                if (hitResult.type === 'fill' && hitResult.item.player) {
                     player = hitResult.item;
                 }
             }
@@ -53,7 +85,7 @@
 
         function onMouseMove(event) {
             project.activeLayer.selected = false;
-            if (event.item) {
+            if (event.item && event.item.player) {
                 event.item.selected = true;
             }
         }
@@ -65,6 +97,10 @@
 
             player.position += event.delta;
 
+            calculateFreeZones();
+        }
+
+        function onResize(event) {
             calculateFreeZones();
         }
 
@@ -127,21 +163,15 @@
                 new Line(bounds.bottomLeft, bounds.topLeft),
                 new Line(bounds.topLeft, bounds.topRight)
             ];
-            //segments.push(ballPosition);
-            //var clampedPoint1 = clampToBounds(ballPosition, new Point(- 100, 100), boundLines);
-            //var clampedPoint2 = clampToBounds(ballPosition, new Point(100, - 100), boundLines);
-            //var clampedPoint1 = clampToBounds(ballPosition, new Point(bounds.right + 100, 100), boundLines);
-            //var clampedPoint2 = clampToBounds(ballPosition, new Point(bounds.right + 100, 100), boundLines);
-            //var clampedPoint2 = clampToBounds(ballPosition, new Point(-100, 100), boundLines);
-            //var clampedPoint1 = clampToBounds(ballPosition, new Point(bounds.right - 100, bounds.bottom + 100), boundLines);
-            //var clampedPoint2 = clampToBounds(ballPosition, new Point(bounds.right + 100, bounds.bottom - 100), boundLines);
-            //var clampedPoint1 = clampToBounds(ballPosition, new Point(- 100, bounds.bottom - 100), boundLines);
-            //var clampedPoint2 = clampToBounds(ballPosition, new Point(100, bounds.bottom + 100), boundLines);
-            //var clampedPoint1 = clampToBounds(ballPosition, new Point(-100, -100), boundLines);
-            //var clampedPoint2 = clampToBounds(ballPosition, new Point(-100, bounds.bottom + 100), boundLines);
-            //segments.push(clampedPoint1.point);
-            //segments.push(clampedPoint2.point);
-            //console.log(segments);
+            segments.push(ballPosition);
+            /*var clampedPoint1 = clampToBounds(ballPosition, new Point(
+                    ballPosition.x + Math.cos(Math.PI) * 2000,
+                    ballPosition.y + Math.sin(Math.PI) * 2000),
+                boundLines);
+            var clampedPoint2 = clampToBounds(ballPosition, new Point(
+                    ballPosition.x + Math.cos(Math.PI * 2) * 2000,
+                    ballPosition.y + Math.sin(Math.PI * 2) * 2000),
+                boundLines);*/
             for (i = 0; i < freeZones.length; i++) {
                 var freeZone = freeZones[i];
                 var clampedPoint1 = clampToBounds(ballPosition, new Point(
@@ -161,8 +191,12 @@
                             segments.push(boundLines[j].point)
                         }
                     } else {
-                        for (j = clampedPoint1.index - 1; j >= clampedPoint2.index; j--) {
-                            segments.push(boundLines[j].point + boundLines[j].vector)
+                        for (j = clampedPoint1.index; j !== clampedPoint2.index;) {
+                            j++;
+                            if (j >= boundLines.length) {
+                                j = 0;
+                            }
+                            segments.push(boundLines[j].point);
                         }
                     }
                 }
