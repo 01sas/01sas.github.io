@@ -56,3 +56,13 @@ function addFreeZone(freeZones, newFreeZone) {
         }
     }
 }
+
+function clamp(value, lowerBound, upperBound) {
+    if (value < lowerBound) {
+        return lowerBound;
+    }
+    if (value > upperBound) {
+        return upperBound;
+    }
+    return value;
+}
