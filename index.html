@@ -9,23 +9,23 @@
     <script type="text/paperscript" canvas="myCanvas">
         var freeZonePath = new Path({
             fillColor: 'rgba(0, 128, 0, 0.66)',
-            strokeColor: 'black',
             closed: true
         });
         freeZonePath.closed = true;
         var i, player, team1 = [], team2 = [];
         for (i = 0; i < 8; i++) {
-            player = new Shape.Circle(new Point(i * 80 + 40, 40), 30);
-            player.fillColor = 'rgba(28, 117, 188, 0.66)';
-            player.team = 1;
-            player.ball = false;
-            team1.push(player);
+            team1.push(new Shape.Circle({
+                center: new Point(i * 80 + 40, 40),
+                radius: 30,
+                fillColor: 'rgba(28, 117, 188, 0.66)'
+            }));
         }
         for (i = 0; i < 8; i++) {
-            player = new Shape.Circle(new Point(i * 80 + 40, 100), 30);
-            player.fillColor = 'rgba(255, 128, 0, 0.66)';
-            player.team = 2;
-            team2.push(player);
+            team2.push(new Shape.Circle({
+                center: new Point(i * 80 + 40, 100),
+                radius: 30,
+                fillColor: 'rgba(255, 128, 0, 0.66)'
+            }));
         }
 
         team1[0].ball = true;
@@ -69,6 +69,7 @@
         }
 
         function calculateFreeZones() {
+            var i, j;
             var twoPi = 2 * Math.PI;
             var bounds = project.view.bounds;
             var ballPosition = team1[0].position;
@@ -85,7 +86,7 @@
                 }
             ];
 
-            for (var i = 0; i < team2.length; i++) {
+            for (i = 0; i < team2.length; i++) {
                 var team2Player = team2[i];
                 var distance = ballPosition.getDistance(team2Player.position)
                 var angle = (team2Player.position - ballPosition). angleInRadians;
@@ -120,18 +121,73 @@
             }
 
             var segments = [];
+            var boundLines = [
+                new Line(bounds.topRight, bounds.bottomRight),
+                new Line(bounds.bottomRight, bounds.bottomLeft),
+                new Line(bounds.bottomLeft, bounds.topLeft),
+                new Line(bounds.topLeft, bounds.topRight)
+            ];
+            //segments.push(ballPosition);
+            //var clampedPoint1 = clampToBounds(ballPosition, new Point(- 100, 100), boundLines);
+            //var clampedPoint2 = clampToBounds(ballPosition, new Point(100, - 100), boundLines);
+            //var clampedPoint1 = clampToBounds(ballPosition, new Point(bounds.right + 100, 100), boundLines);
+            //var clampedPoint2 = clampToBounds(ballPosition, new Point(bounds.right + 100, 100), boundLines);
+            //var clampedPoint2 = clampToBounds(ballPosition, new Point(-100, 100), boundLines);
+            //var clampedPoint1 = clampToBounds(ballPosition, new Point(bounds.right - 100, bounds.bottom + 100), boundLines);
+            //var clampedPoint2 = clampToBounds(ballPosition, new Point(bounds.right + 100, bounds.bottom - 100), boundLines);
+            //var clampedPoint1 = clampToBounds(ballPosition, new Point(- 100, bounds.bottom - 100), boundLines);
+            //var clampedPoint2 = clampToBounds(ballPosition, new Point(100, bounds.bottom + 100), boundLines);
+            //var clampedPoint1 = clampToBounds(ballPosition, new Point(-100, -100), boundLines);
+            //var clampedPoint2 = clampToBounds(ballPosition, new Point(-100, bounds.bottom + 100), boundLines);
+            //segments.push(clampedPoint1.point);
+            //segments.push(clampedPoint2.point);
+            //console.log(segments);
             for (i = 0; i < freeZones.length; i++) {
                 var freeZone = freeZones[i];
-                var point = new Point(
-                    ballPosition.x + Math.cos(freeZone.start) * freeZone.radius,
-                    ballPosition.y + Math.sin(freeZone.start) * freeZone.radius);
-                segments.push(point);
-                segments.push(new Point(
-                    ballPosition.x + Math.cos(freeZone.end) * freeZone.radius,
-                    ballPosition.y + Math.sin(freeZone.end) * freeZone.radius));
+                var clampedPoint1 = clampToBounds(ballPosition, new Point(
+                        ballPosition.x + Math.cos(freeZone.start) * freeZone.radius,
+                        ballPosition.y + Math.sin(freeZone.start) * freeZone.radius),
+                    boundLines);
+                var clampedPoint2 = clampToBounds(ballPosition, new Point(
+                        ballPosition.x + Math.cos(freeZone.end) * freeZone.radius,
+                        ballPosition.y + Math.sin(freeZone.end) * freeZone.radius),
+                    boundLines);
+                segments.push(clampedPoint1.point);
+                if (clampedPoint1.index !== undefined
+                    && clampedPoint2.index !== undefined
+                    && clampedPoint1.index !== clampedPoint2.index) {
+                    if (clampedPoint1.index < clampedPoint2.index) {
+                        for (j = clampedPoint1.index + 1; j <= clampedPoint2.index; j++) {
+                            segments.push(boundLines[j].point)
+                        }
+                    } else {
+                        for (j = clampedPoint1.index - 1; j >= clampedPoint2.index; j--) {
+                            segments.push(boundLines[j].point + boundLines[j].vector)
+                        }
+                    }
+                }
+                segments.push(clampedPoint2.point);
             }
             freeZonePath.removeSegments();
             freeZonePath.addSegments(segments);
+        }
+
+        function clampToBounds(startPoint, finishPoint, boundLines) {
+            var line = new Line(startPoint, finishPoint);
+            for (var j = 0; j < boundLines.length; j++) {
+                var inter = line.intersect(boundLines[j]);
+                if (inter) {
+                    return {
+                        point: inter,
+                        index: j
+                    };
+                }
+            }
+
+            return {
+                point: finishPoint,
+                index: undefined
+            };
         }
     </script>
     <style>
