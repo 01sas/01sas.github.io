@@ -1,107 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Football free zone visualizer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
-    <script type="text/javascript" src="https://cdn.skypack.dev/two.js@latest"></script>
-</head>
-<body>
-<h1>Test</h1>
-</body>
-<script>
-    var increment = Math.PI / 256;
-    var TWO_PI = Math.PI * 2;
-
-    var two = new Two({
-        type: Two.Types.svg,
-        fullscreen: true
-    }).appendTo(document.body);
-
-    var background = two.makeGroup();
-    var middleground = two.makeGroup();
-    var foreground = two.makeGroup();
-
-    var sun = makeSun(two);
-    sun.translation.set(two.width / 2, two.height / 2);
-
-    middleground.add(sun);
-
-    var isBackground = false;
-    var earth = two.makeCircle(two.width * 0.33, two.height * 0.66, two.height / 12);
-    earth.stroke = 'rgba(28, 117, 188, 0.66)';
-    earth.linewidth = 7;
-    earth.fill = 'rgb(0, 200, 255)';
-
-    two
-        .bind('resize', function() {
-
-            sun.translation.x = two.width / 2;
-            sun.translation.y = two.height / 2;
-            path.translation.copy(sun.translation);
-
-        })
-        .bind('update', function(frameCount) {
-
-            var osc = Math.sin(- frameCount / (Math.PI * 8));
-
-            if (osc >= 0.9 && isBackground) {
-                foreground.add(earth);
-                isBackground = false;
-            }
-            if (osc <= - 0.9 && !isBackground) {
-                background.add(earth);
-                isBackground = true;
-            }
-
-            earth.translation.x = osc * two.width / 4 + two.width / 2;
-            earth.translation.y = - osc * two.height / 4 + two.height / 2;
-
-            if (sun.rotation >= TWO_PI - 0.0625) {
-                sun.rotation = 0;
-            }
-
-            sun.rotation += (TWO_PI - sun.rotation) * 0.0625;
-
-        })
-        .play();
-
-    function makeSun(two) {
-
-        var color = 'rgba(255, 128, 0, 0.66)';
-        var sun = two.makeGroup();
-        var radius = two.height / 4;
-        var gutter = two.height / 20;
-
-        var core = two.makeCircle(0, 0, radius);
-        core.noStroke();
-        core.fill = color;
-
-        sun.core = core;
-
-        var coronas = [];
-        var corona_amount = 16;
-        for (var i = 0; i < corona_amount; i++) {
-            var pct = (i + 1) / corona_amount;
-            var theta = pct * Math.PI * 2;
-            var x = (radius + gutter) * Math.cos(theta);
-            var y = (radius + gutter) * Math.sin(theta);
-            var corona = makeTriangle(two, gutter);
-            corona.noStroke();
-            corona.fill = color;
-            corona.translation.set(x, y);
-            corona.rotation = Math.atan2(-y, -x) + Math.PI / 2;
-            coronas.push(corona);
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript" src="js/paper-full.min.js"></script>
+    <script type="text/javascript" src="js/free-zones.js"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+        var freeZonePath = new Path({
+            fillColor: 'rgba(0, 128, 0, 0.66)',
+            strokeColor: 'black',
+            closed: true
+        });
+        freeZonePath.closed = true;
+        var i, player, team1 = [], team2 = [];
+        for (i = 0; i < 8; i++) {
+            player = new Shape.Circle(new Point(i * 80 + 40, 40), 30);
+            player.fillColor = 'rgba(28, 117, 188, 0.66)';
+            player.team = 1;
+            player.ball = false;
+            team1.push(player);
+        }
+        for (i = 0; i < 8; i++) {
+            player = new Shape.Circle(new Point(i * 80 + 40, 100), 30);
+            player.fillColor = 'rgba(255, 128, 0, 0.66)';
+            player.team = 2;
+            team2.push(player);
         }
 
-        sun.add(core).add(coronas);
+        team1[0].ball = true;
+        calculateFreeZones();
 
-        return sun;
+        player = null;
+        var hitOptions = {
+            fill: true,
+            tolerance: 5
+        };
 
-    }
+        function onMouseDown(event) {
+            player = null;
+            var hitResult = project.hitTest(event.point, hitOptions);
+            if (!hitResult) {
+                return;
+            }
 
-    function makeTriangle(two, size) {
-        return two.makePath(- size / 2, 0, size / 2, 0, 0, size);
-    }
-</script>
+            if (hitResult) {
+                if (hitResult.type === 'fill') {
+                    player = hitResult.item;
+                }
+            }
+        }
+
+        function onMouseMove(event) {
+            project.activeLayer.selected = false;
+            if (event.item) {
+                event.item.selected = true;
+            }
+        }
+
+        function onMouseDrag(event) {
+            if (!player) {
+                return;
+            }
+
+            player.position += event.delta;
+
+            calculateFreeZones();
+        }
+
+        function calculateFreeZones() {
+            var twoPi = 2 * Math.PI;
+            var bounds = project.view.bounds;
+            var ballPosition = team1[0].position;
+            var maxDistance = 0;
+            maxDistance = Math.max(maxDistance, ballPosition.getDistance(bounds.topLeft));
+            maxDistance = Math.max(maxDistance, ballPosition.getDistance(bounds.topRight));
+            maxDistance = Math.max(maxDistance, ballPosition.getDistance(bounds.bottomLeft));
+            maxDistance = Math.max(maxDistance, ballPosition.getDistance(bounds.bottomRight));
+            var freeZones = [
+                {
+                    start: 0,
+                    end: twoPi,
+                    radius: maxDistance
+                }
+            ];
+
+            for (var i = 0; i < team2.length; i++) {
+                var team2Player = team2[i];
+                var distance = ballPosition.getDistance(team2Player.position)
+                var angle = (team2Player.position - ballPosition). angleInRadians;
+                if (angle < 0) {
+                    angle = twoPi + angle;
+                }
+                var addAngle = new Point(distance, team2Player.bounds.width / 2).angleInRadians;
+                var start = angle - addAngle;
+                var end = angle + addAngle;
+
+                if (start < 0) {
+                    addFreeZone(freeZones, {
+                        start: twoPi + start,
+                        end: twoPi,
+                        radius: distance
+                    });
+                    start = 0;
+                }
+                if (end > twoPi) {
+                    addFreeZone(freeZones, {
+                        start: 0,
+                        end: end - twoPi,
+                        radius: distance
+                    });
+                    end = twoPi;
+                }
+                addFreeZone(freeZones, {
+                    start: start,
+                    end: end,
+                    radius: distance
+                });
+            }
+
+            var segments = [];
+            for (i = 0; i < freeZones.length; i++) {
+                var freeZone = freeZones[i];
+                var point = new Point(
+                    ballPosition.x + Math.cos(freeZone.start) * freeZone.radius,
+                    ballPosition.y + Math.sin(freeZone.start) * freeZone.radius);
+                segments.push(point);
+                segments.push(new Point(
+                    ballPosition.x + Math.cos(freeZone.end) * freeZone.radius,
+                    ballPosition.y + Math.sin(freeZone.end) * freeZone.radius));
+            }
+            freeZonePath.removeSegments();
+            freeZonePath.addSegments(segments);
+        }
+    </script>
+    <style>
+        canvas[resize] {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" resize="resize"></canvas>
+</body>
 </html>
