@@ -7,16 +7,7 @@
     <script type="text/javascript" src="js/paper-full.min.js"></script>
     <script type="text/javascript" src="js/free-zones.js"></script>
     <script type="text/paperscript" canvas="myCanvas">
-        var playerSvgData = "M399.556,77.384c-28.3-14.5-57.4-26.7-87.2-37.5c-4.2-8.8-19.5-9-27.6-8c-14.801,2-29.9,4-44.7,4.3" +
-            "c-14.8-0.3-29.9-2.3-44.7-4.3c-8-1.1-23.4-0.8-27.6,8c-29.9,10.9-58.9,23-87.2,37.5c-6.8,3.5-82.9,45-80.5,49" +
-            "c11.3,18.8,56.6,103.1,62.2,103.1c7.9,0,21.3-14.5,28.6-11.9c0.4,16.8,1.1,211.4,1.1,222.6c0,7.1,83.1,8.301,148,8.301" +
-            "c65,0,148-1.201,148-8.301c0.1-11.299,0.699-205.8,1.1-222.6c7.3-2.6,20.7,11.9,28.6,11.9c5.601,0,50.9-84.3,62.2-103.1" +
-            "C482.355,122.484,406.355,80.884,399.556,77.384z M135.756,426.184h-24v-31.5h24V426.184z M216.156,237.184c0,0.8-0.7,1.5-1.5,1.5" +
-            "h-23.8c-0.8,0-1.5-0.7-1.5-1.5v-59.2c0-1.2-1.4-2-2.4-1.2c-3.5,2.5-6.9,4.6-10.2,6.2c-3.6,1.8-8.1,3.6-13.3,5.3c-1,0.3-2-0.4-2-1.5" +
-            "v-18.6c0-0.7,0.4-1.2,1.1-1.5c8.5-2.8,15.2-6.2,20-10.2c4.8-3.9,8.5-8.7,11.3-14.3c0.3-0.5,0.8-0.9,1.4-0.9h19.5" +
-            "c0.8,0,1.5,0.7,1.5,1.5v94.4H216.156z M305.355,237.184c0,0.8-0.7,1.5-1.5,1.5h-23.8c-0.8,0-1.5-0.7-1.5-1.5v-59.2" +
-            "c0-1.2-1.4-2-2.4-1.2c-3.5,2.5-6.899,4.6-10.2,6.2c-3.6,1.8-8.1,3.6-13.3,5.3c-1,0.3-2-0.4-2-1.5v-18.6c0-0.7,0.4-1.2,1.101-1.5" +
-            "c8.5-2.8,15.199-6.2,20-10.2c4.8-3.9,8.5-8.7,11.3-14.3c0.3-0.5,0.8-0.9,1.399-0.9h19.501c0.8,0,1.5,0.7,1.5,1.5v94.4H305.355z";
+        var playerSvgData = "M 18.826172 0 C 18.035859 0.00328125 17.090391 0.18570314 16.775391 0.84570312 C 13.785391 1.9357031 10.884687 3.1457031 8.0546875 4.5957031 C 7.3746875 4.9457031 -0.23414062 9.0960937 0.005859375 9.4960938 C 1.1358594 11.376094 5.6646094 19.804688 6.2246094 19.804688 C 7.0146094 19.804688 8.3559375 18.355234 9.0859375 18.615234 C 9.1259375 20.295234 9.1953125 39.755 9.1953125 40.875 C 9.1953125 41.585 17.506094 41.705078 23.996094 41.705078 C 30.496094 41.705078 38.794922 41.585 38.794922 40.875 C 38.804922 39.7451 38.86615 20.295234 38.90625 18.615234 C 39.63625 18.355234 40.975625 19.804688 41.765625 19.804688 C 42.325725 19.804688 46.856328 11.376094 47.986328 9.4960938 C 48.236228 9.1060937 40.634978 4.9457031 39.955078 4.5957031 C 37.125078 3.1457031 34.216328 1.9257031 31.236328 0.84570312 C 30.816328 -0.03429687 29.284609 -0.055078125 28.474609 0.044921875 C 26.994509 0.24492188 25.485859 0.44460937 24.005859 0.47460938 C 22.525859 0.44460937 21.015156 0.24492188 19.535156 0.044921875 C 19.335156 0.017421875 19.089609 -0.00109375 18.826172 0 z";
         var freeZonePath = new Path({
             fillColor: 'rgba(0, 128, 0, 0.66)',
             closed: true
@@ -24,43 +15,44 @@
         freeZonePath.closed = true;
         var i, player, team1 = [], team2 = [];
         for (i = 0; i < 8; i++) {
-            team1.push(new Shape.Circle({
-                center: new Point(i * 80 + 40, 40),
-                radius: 30,
-                fillColor: 'rgba(28, 117, 188)',
-                player: true
-            }));
-            /*var playerPath = new Path(playerSvgData);
-            playerPath.fillColor = 'rgba(28, 117, 188)';
-            playerPath.scale(0.1);
             team1.push(new Group({
                 children: [
-                    playerPath,
+                    new Path({
+                        pathData: playerSvgData,
+                        fillColor: 'rgba(28, 117, 188)',
+                        position: new Point(0, 0)
+                    })
+                ],
+                position: new Point(i * 80 + 40, 40),
+                player: true
+            }));
+        }
+        for (i = 0; i < 8; i++) {
+            team2.push(new Group({
+                children: [
                     new Shape.Circle({
                         radius: 30,
                         center: new Point(0, 0),
-                        fillColor: 'rgba(28, 117, 188)',
+                        fillColor: 'rgba(255, 128, 0)',
                         player: true
+                    }),
+                    new Path({
+                        pathData: playerSvgData,
+                        fillColor: 'rgba(155, 155, 155)',
+                        position: new Point(0, 0)
                     })
                 ],
-                position: new Point(i * 80 + 40, 40)
-            }));*/
-        }
-        for (i = 0; i < 8; i++) {
-            team2.push(new Shape.Circle({
-                center: new Point(i * 80 + 40, 100),
-                radius: 30,
-                fillColor: 'rgba(255, 128, 0)',
+                position: new Point(i * 80 + 40, 100),
                 player: true
             }));
         }
 
         team1[0].ball = true;
-        /*team1[0].addChild(new Shape.Circle({
-            center: new Point(30, 30),
-            radius: 5,
+        team1[0].addChild(new Shape.Circle({
+            center: new Point(50, 50),
+            radius: 10,
             fillColor: 'black'
-        }));*/
+        }));
         calculateFreeZones();
 
         player = null;
@@ -77,16 +69,16 @@
             }
 
             if (hitResult) {
-                if (hitResult.type === 'fill' && hitResult.item.player) {
-                    player = hitResult.item;
+                if (hitResult.type === 'fill' && hitResult.item.parent && hitResult.item.parent.player) {
+                    player = hitResult.item.parent;
                 }
             }
         }
 
         function onMouseMove(event) {
             project.activeLayer.selected = false;
-            if (event.item && event.item.player) {
-                event.item.selected = true;
+            if (event.item && event.item.parent && event.item.parent.player) {
+                event.item.parent.selected = true;
             }
         }
 
@@ -124,7 +116,7 @@
 
             for (i = 0; i < team2.length; i++) {
                 var team2Player = team2[i];
-                var distance = ballPosition.getDistance(team2Player.position)
+                var distance = ballPosition.getDistance(team2Player.position);
                 var angle = (team2Player.position - ballPosition). angleInRadians;
                 if (angle < 0) {
                     angle = twoPi + angle;
