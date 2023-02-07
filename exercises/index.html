@@ -5,280 +5,72 @@
     <title>Упражнения</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+    <script type="text/javascript" src="../js/jquery-3.6.3.min.js"></script>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var $modal = $('#modal');
+            var $modalTitle = $('#modal .modal-title');
+            var $modalBody = $('#modal .modal-body');
+            $modal.on('hide.bs.modal', function () {
+                $modalTitle.html('');
+                $modalBody.html('');
+            })
+
+            $('.list-group-item').click(function(event) {
+                var $target = $(event.target);
+                $modalTitle.html($target.html());
+                $modalBody.html('<iframe src="' + $target.attr('data-youtube') +
+                    '" title="YouTube video player" frameborder="0"' +
+                    ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"' +
+                    ' style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"' +
+                    ' allowfullscreen></iframe>');
+
+                $modal.modal('show');
+            });
+        })
+    </script>
 </head>
 <body>
 <div class="row">
     <main class="card">
         <div class="card-body">
             <ul class="list-group">
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#feint1">Финт Зидана/марсельская рулетка</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise1">Прямые задвижки</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise2">Задвижки вприпрыжку</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise3">Сито-задвижка</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise4">Ведение внешними стопами с забеганием</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise5">Ведение внешними стопами спиной</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise6">Полумесяц</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise7">Елочка</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise8">Елочка спиной</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise9">Елочка наружу</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise10">Елочка наружу спиной</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise11">Змеечка</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise12">Змеечка спиной</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise13">Ствол</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise14">Ствол спиной</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise15">Ведение боком</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise16">Ведение боком внешней стопой</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise17">Ведение боком двумя ногами</li>
-                <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#exercise18">В шахмотном порядке</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/YkpiUjlpxb4?start=63">Финт Зидана/марсельская рулетка</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/8KsSkpKNaK8?start=26">Разворот Кройфа</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/1S2MHO0one4">Быстрый разворот</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/fDxL0qP5Fvg">Понтовый разворот</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/jOODBKL1BEs">Контроль мяча</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=149">Прямые задвижки</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=175">Задвижки вприпрыжку</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=258">Сито-задвижка</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=296">Ведение внешними стопами с забеганием</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=330">Ведение внешними стопами спиной</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=404">Полумесяц</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=441">Елочка</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=467">Елочка спиной</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=502">Елочка наружу</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=530">Елочка наружу спиной</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=565">Змеечка</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=590">Змеечка спиной</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=624">Ствол</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=641">Ствол спиной</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=765">Ведение боком</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=790">Ведение боком внешней стопой</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=823">Ведение боком двумя ногами</li>
+                <li class="list-group-item" data-youtube="https://www.youtube.com/embed/TPYQ11vsjsc?start=881">В шахмотном порядке</li>
             </ul>
         </div>
     </main>
 </div>
-<div class="modal fade" id="feint1" tabindex="-1">
+<div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Финт Зидана/марсельская рулетка</h1>
+                <h1 class="modal-title fs-5">Title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/YkpiUjlpxb4?start=63" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise1" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Прямые задвижки</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=149" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise2" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Задвижки вприпрыжку</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=175" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise3" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Сито-задвижка</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=258" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise4" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Ведение внешними стопами с забеганием</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=296" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise5" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Ведение внешними стопами спиной</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=330" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise6" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Полумесяц</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=404" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise7" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Елочка</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=441" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise8" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Елочка спиной</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=467" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise9" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Елочка наружу</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=502" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise10" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Елочка наружу спиной</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=530" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise11" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Елочка наружу спиной</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=565" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise12" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Елочка наружу спиной</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=590" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise13" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Ствол</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=624" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise14" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Ствол спиной</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=641" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise15" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Ведение боком</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=765" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise16" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Ведение боком внешней стопой</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=790" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise17" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Ведение боком двумя ногами</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=823" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exercise18" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">В шахмотном порядке</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://www.youtube.com/embed/TPYQ11vsjsc?start=881" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:relative; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;" allowfullscreen></iframe>
-            </div>
+            <div class="modal-body"></div>
         </div>
     </div>
 </div>
